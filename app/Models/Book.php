@@ -6,6 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
 {
+
+    protected $fillable = [
+        'title',
+        'language',
+        'publication_year',
+        'description',
+        'available',
+        'author_id',
+        'category_id',
+    ];
+
     public function borrowings(){
         return $this->hasMany(Borrowing::class);
     }

@@ -24,6 +24,7 @@ class BooksTableSeeder extends Seeder
         }
 
         $languages = ['English', 'Arabic', 'French'];
+        $desc = fake()->paragraph();
 
         foreach (range(1, 20) as $i) {
             Book::create([
@@ -31,6 +32,7 @@ class BooksTableSeeder extends Seeder
                 'language' => $languages[array_rand($languages)],
                 'publication_year' => rand(1990, 2024),
                 'available' => rand(0, 1),
+                'description'=> $desc,
                 'author_id' => $authors->random()->id,
                 'category_id' => $categories->random()->id,
             ]);

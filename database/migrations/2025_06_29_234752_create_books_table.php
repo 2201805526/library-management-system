@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->enum('language', ['English', 'Arabic', 'French']);
             $table->integer('publication_year')->nullable();
+            $table->text('description');
             $table->boolean('available')->default(true);
 
             $table->foreignId('author_id')->nullable()->constrained()->nullOnDelete();

@@ -28,24 +28,56 @@ Route::middleware('auth')->group(function(){
 // routes for admins
 Route::middleware(['auth', 'role:admin'])->group(function(){
     // routes
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    //dashboards
+    Route::get('dashboard/admin', [DashboardController::class, 'index'])->name('dashboard.admin');
+
+    //users
     Route::get('/users/index', [UserController::class, 'index'])->name('users.index');
+
+    //books
+    Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
+    Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
+    Route::get('/books/show/{id}', [BookController::class, 'show'])->name('books.details');
+    Route::get('/books/edit/{id}', [BookController::class, 'edit'])->name('books.edit');
+    Route::post('/books/store/{id}', [BookController::class, 'store'])->name('books.store');
+    Route::put('/books/update/{id}', [BookController::class, 'update'])->name('books.update');
+
 
 });
 
 // routes for librarians
 Route::middleware(['auth', 'role:librarian'])->group(function(){
     //routes
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    //dashboards
+    Route::get('dashboard/librarian', [DashboardController::class, 'index'])->name('dashboard.librarian');
+
+    //books
+    Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
+    Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
+    Route::get('/books/show/{id}', [BookController::class, 'show'])->name('books.details');
+    Route::get('/books/edit/{id}', [BookController::class, 'edit'])->name('books.edit');
+    Route::post('/books/store/{id}', [BookController::class, 'store'])->name('books.store');
+    Route::put('/books/update/{id}', [BookController::class, 'update'])->name('books.update');
 
 });
 
 // routes for students
 Route::middleware(['auth', 'role:student'])->group(function(){
     //routes
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    //dashboards
+    Route::get('dashboard/student', [DashboardController::class, 'index'])->name('dashboard.student');
+
+    //books
     Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
+    Route::get('/books/show/{id}', [BookController::class, 'show'])->name('books.show');
+
+    //borrowings
     Route::get('/borrowings/my', [BorrowingController::class, 'index'])->name('borrowings.index');
+
+    //fines
     Route::get('/fines/index', [FineController::class, 'index'])->name('fines.index');
 
 });

@@ -28,11 +28,11 @@ class AuthController extends Controller
             $role = Auth::user()->role;
 
             if ($role === 'admin') {
-                return redirect()->intended( '/dashboard');
+                return redirect()->intended( 'dashboard/admin');
             } elseif ($role === 'librarian') {
-                return redirect()->intended('/dashboard');
+                return redirect()->intended('dashboard/librarian');
             } else {
-                return redirect()->intended('/dashboard');
+                return redirect()->intended('dashboard/student');
             }
         }
 
