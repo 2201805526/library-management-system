@@ -37,7 +37,6 @@ Route::middleware(['auth', 'role:admin'])->group(function(){
 Route::middleware(['auth', 'role:librarian'])->group(function(){
     //routes
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/');
 
 });
 

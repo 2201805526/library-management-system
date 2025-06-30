@@ -23,16 +23,17 @@ class Borrowing extends Model
         'returned_at' => 'datetime',
     ];
 
+    // for relations
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
+    // for relations
     public function book()
     {
         return $this->belongsTo(Book::class);
     }
-
+    // for relations
     public function fine()
     {
         return $this->hasOne(Fine::class);
