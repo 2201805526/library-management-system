@@ -4,15 +4,17 @@
 <div class="container">
     <h1>Edit Book</h1>
 
-    <form action="{{ route('books.update', $book->id) }}" method="POST">
+    <form action="{{route('books.update', $book->id)}}" method="POST">
         @csrf
         @method('PUT')
 
+        {{-- title --}}
         <div>
             <label>Title:</label>
             <input type="text" name="title" value="{{ $book->title }}" required>
         </div>
 
+        {{-- language --}}
         <div>
             <label>Language:</label>
             <select name="language" required>
@@ -22,11 +24,13 @@
             </select>
         </div>
 
+        {{-- publication year --}}
         <div>
             <label>Publication Year:</label>
             <input type="number" name="publication_year" value="{{ $book->publication_year }}" required>
         </div>
 
+        {{-- availability --}}
         <div>
             <label>Available:</label>
             <select name="available" required>
@@ -35,6 +39,7 @@
             </select>
         </div>
 
+        {{-- author's name --}}
         <div>
             <label>Author:</label>
             <select name="author_id" required>
@@ -46,6 +51,7 @@
             </select>
         </div>
 
+        {{-- category's name --}}
         <div>
             <label>Category:</label>
             <select name="category_id" required>
@@ -59,6 +65,6 @@
 
         <button type="submit">Update Book</button>
     </form>
-</div>  
+</div>
 
 @endsection

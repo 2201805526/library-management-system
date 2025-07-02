@@ -11,7 +11,12 @@
     <p><strong>Author:</strong> {{ $book->author->name }}</p>
     <p><strong>Category:</strong> {{ $book->category->name }}</p>
 
-    <a href="{{ route('books.edit', $book->id) }}">Edit Book</a>
+    @auth
+        @if (Auth::user()->role === 'admin' || Auth::user()->role === 'librarian')
+            <a href="{{ route('books.edit', $book->id) }}">Edit Book</a>
+            <a href="{{ route('books.destroy', $book->id) }}">Delete Book</a>
+        @endif
+    @endauth
 </div>
 
 @endsection

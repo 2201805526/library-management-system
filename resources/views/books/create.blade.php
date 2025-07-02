@@ -4,16 +4,16 @@
 <div class="container">
     <h1>Add New Book</h1>
 
-    <form action="{{ route('books.store') }}" method="POST">
+    <form action="{{route('books.store')}}" method="POST">
         @csrf
 
         <div>
-            <label>Title:</label>
+            <label>Title: </label>
             <input type="text" name="title" required>
         </div>
 
         <div>
-            <label>Language:</label>
+            <label>Language: </label>
             <select name="language" required>
                 <option value="English">English</option>
                 <option value="Arabic">Arabic</option>
@@ -22,12 +22,12 @@
         </div>
 
         <div>
-            <label>Publication Year:</label>
+            <label>Publication Year: </label>
             <input type="number" name="publication_year" required>
         </div>
 
         <div>
-            <label>Available:</label>
+            <label>Available: </label>
             <select name="available" required>
                 <option value="1">Yes</option>
                 <option value="0">No</option>
@@ -35,19 +35,19 @@
         </div>
 
         <div>
-            <label>Author:</label>
+            <label>Author: </label>
             <select name="author_id" required>
                 @foreach($authors as $author)
-                    <option value="{{ $author->id }}">{{ $author->name }}</option>
+                    <option value="{{$author->id}}">{{$author->name}}</option>
                 @endforeach
             </select>
         </div>
 
         <div>
-            <label>Category:</label>
+            <label>Category: </label>
             <select name="category_id" required>
                 @foreach($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <option value="{{$category->id}}">{{ $category->name }}</option>
                 @endforeach
             </select>
         </div>

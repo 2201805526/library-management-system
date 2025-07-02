@@ -7,29 +7,28 @@ use App\Models\Author;
 use App\Models\Category;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use PhpParser\Node\Expr\Cast\String_;
 
 class BookController extends Controller
 {
-    public function index()
-    {
+    public function index(){
         $books = Book::with(['author', 'category'])->get();
 
         return view('books.index', compact('books'));
     }
 
     //show form to create a new book
-    public function create()
-    {
-        $categories = Category::all();
-        $authors = Author::all();
+    public function create(){
+            $categories = Category::all();
+            $authors = Author::all();
 
         return view('books.create', compact('authors', 'categories'));
     }
 
     //show single book's details
-    public function show(String $id): View
-    {
+    public function show(String $id): View{
 
         return view('books.details', [
             'book' => Book::findOrFail($id)
@@ -37,8 +36,7 @@ class BookController extends Controller
     }
 
     // show form to edit an existing book
-    public function edit(String $id)
-    {
+    public function edit(String $id){
         $book = Book::findOrFail($id);
         $categories = Category::all();
         $authors = Author::all();
@@ -47,8 +45,7 @@ class BookController extends Controller
     }
 
     // store a new book
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $validated = $request->validate([
             'title' => 'required|string|max:200',
             'language' => 'required|in:English,Arabic,French',
@@ -83,6 +80,6 @@ class BookController extends Controller
         //to update with the validated data
         $book->update($validated);
 
-        return redirect()->route('books.index')->with('success', 'Book updated successfully!');
+        return redirect()->route('books.index')->with('success', 'Book updated successfully! 🔃');
     }
 }

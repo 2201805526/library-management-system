@@ -11,4 +11,10 @@ class FineController extends Controller
         return view('fines.index', compact('fines'));
 
     }
+
+    public function showAll(){
+        $allFines = Fine::with(['borrowing.user', 'borrowing.book'])->get();
+
+        return view('fines.all', compact('allFines'));
+    }
 }
