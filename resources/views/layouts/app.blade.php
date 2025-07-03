@@ -10,7 +10,7 @@
 <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
         <div class="container">
-            <a class="navbar-brand" href="#">مكتبتي</a>
+            <a class="navbar-brand" href="{{route('dashboard')}}">مكتبتي</a>
             <div class="ms-auto">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

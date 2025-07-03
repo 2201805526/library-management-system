@@ -7,13 +7,11 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // عرض نموذج تسجيل الدخول
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    // تنفيذ عملية تسجيل الدخول
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -24,16 +22,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // توجيه حسب نوع الدور
-            $role = Auth::user()->role;
-
-            if ($role === 'admin') {
-                return redirect()->intended( 'dashboard/admin');
-            } elseif ($role === 'librarian') {
-                return redirect()->intended('dashboard/librarian');
-            } else {
-                return redirect()->intended('dashboard/student');
-            }
+                return redirect()->intended('dashboard');
         }
 
         return back()->withErrors([
@@ -41,7 +30,6 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
-    // تنفيذ عملية تسجيل الخروج
     public function logout(Request $request)
     {
         Auth::logout();

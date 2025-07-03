@@ -52,4 +52,8 @@ class Borrowing extends Model
 
         return 0;
     }
+
+    public function currentBorrowingUser(){
+        return $this->hasOne(Borrowing::class)->whereNull('returned_at');
+    }
 }

@@ -19,24 +19,4 @@ class Fine extends Model
     {
         return $this->belongsTo(Borrowing::class);
     }
-
-
-    public function returnBook($id)
-    {
-        $borrowing = Borrowing::findOrFail($id);
-        $borrowing->returned_at = now();
-        $borrowing->save();
-
-        $fineAmount = $borrowing->calculateFine();
-
-        if ($fineAmount > 0) {
-            Fine::create([
-                'borrowing_id' => $borrowing->id,
-                'amount' => $fineAmount,
-                'isPaid' => false,
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'تم إرجاع الكتاب' . ($fineAmount > 0 ? ' مع غرامة' : ''));
-    }
 }

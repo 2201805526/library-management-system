@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\FineController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,6 +15,9 @@ Route::get('/', function () {
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function(){
 
@@ -27,9 +31,15 @@ Route::middleware('auth')->group(function(){
 
 //routes for all users
 Route::middleware(['auth'])->group(function(){
+
+
     //books
     Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
+
+    //fines
+    Route::delete('/fines/{id}/pay', [FineController::class, 'pay'])->name('fines.pay');
+
 
 
 });
@@ -39,7 +49,6 @@ Route::middleware(['auth', 'role:admin,librarians'])->group(function(){
 
     //books
     Route::controller(BookController::class)->group(function(){
-
     // Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/create',  'create')->name('books.create');
     Route::post('/books/store/{id}', 'store')->name('books.store');
@@ -49,9 +58,13 @@ Route::middleware(['auth', 'role:admin,librarians'])->group(function(){
     Route::delete('books/{id}', 'destroy')->name('books.destroy');
     });
 
+    //fines
     Route::controller(FineController::class)->group(function(){
         Route::get('/fines/all', 'showAll')->name('fines.all');
     });
+
+    //borrowings
+    Route::get('/borrowings', [BorrowingController::class, 'showAll'])->name('show.all.borrowings');
 
 });
 
@@ -60,9 +73,6 @@ Route::middleware(['auth', 'role:admin,librarians'])->group(function(){
 // routes for admins only 💻
 Route::middleware(['auth', 'role:admin'])->group(function(){
     // routes
-
-    //dashboards
-    Route::get('dashboard/admin', [DashboardController::class, 'index'])->name('dashboard.admin');
 
     //users
     Route::controller(UserController::class)->group(function(){
@@ -78,24 +88,25 @@ Route::middleware(['auth', 'role:admin'])->group(function(){
 // routes for librarians only 📚
 Route::middleware(['auth', 'role:librarian'])->group(function(){
 
-    //dashboards
-    Route::get('dashboard/librarian', [DashboardController::class, 'index'])->name('dashboard.librarian');
+
 });
 
 // routes for students only 👨🏼‍🎓
 Route::middleware(['auth', 'role:student'])->group(function(){
 
-    //dashboards
-    Route::get('dashboard/student', [DashboardController::class, 'index'])->name('dashboard.student');
-
     //books
     // Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
     // Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
-
-    //borrowings
-    Route::get('/borrowings/my', [BorrowingController::class, 'index'])->name('borrowings.index');
+    Route::post('/books/{id}/return', [BookController::class, 'return'])->name('books.return');
 
     //fines
     Route::get('/fines/index', [FineController::class, 'index'])->name('fines.index');
+    Route::delete('/fines/{id}/pay', [FineController::class, 'pay'])->name('fines.pay');
+
+    //borrowings
+    Route::get('borrowings/my/{id}', [BorrowingController::class, 'showMy'])->name('show.my.borrowings');
+    Route::put('borrowings/my/{id}', [BorrowingController::class, 'return'])->name('borrowing.return');
+
+    Route::post('books/details/{id}', [BookController::class, 'borrow'])->name('borrow.book');
 
 });

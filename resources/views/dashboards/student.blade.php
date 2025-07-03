@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@php
+    $userID = auth()->user()->id;
+@endphp
 
 @section('content')
 <div class="container mt-4">
@@ -9,7 +12,7 @@
     <br>
     <ul class="list-group">
         <li class="list-group-item"><a href="{{route('books.index')}}">تصفح الكتب</a></li>
-        <li class="list-group-item"><a href="{{route('borrowings.index')}}">كتبي المستعارة</a></li>
+        <li class="list-group-item"><a href="{{route('show.my.borrowings', $userID)}}">كتبي المستعارة</a></li>
         <li class="list-group-item"><a href="{{route('fines.index')}}">غراماتي</a></li>
     </ul>
     <br>
