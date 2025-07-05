@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Fine;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use function PHPUnit\Framework\isNull;
 
 class BorrowingController extends Controller
 {
@@ -17,19 +18,20 @@ class BorrowingController extends Controller
     }
 
     public function showMy(String $id){
-        $borrowings = Borrowing::with(['user', 'book', 'fine'])->findOrFail($id)->get();
+        $borrowings = Borrowing::findOrFail($id)->with(['user', 'book', 'fine'])->get();
 
         return view('borrowings.my', compact('borrowings'));
     }
 
     public function return (String $id){
 
-        $borrowings = Borrowing::with(['user', 'book', 'fine'])->findOrFail($id)->get();
+        $userId = Auth::user()->id;
         $borrowing = Borrowing::findOrFail($id);
 
-        if(!$borrowing->returned_at){
+        if(isNull($borrowing->returned_at)){
             $borrowing->returned_at = now();
             $borrowing->book->available = true;
+            $borrowing->book->save();
             $borrowing->save();
 
             $fineAmount = $borrowing->calculateFine();
@@ -39,12 +41,12 @@ class BorrowingController extends Controller
                     'borrowing_id' => $borrowing->id,
                     'amount' => $fineAmount,
                     'isPaid' => false,
-            ]);
+            ])->save();
         }
         }
 
-        return redirect()->route('show.my.borrowings', compact('borrowings'))->with('success', 'Book returned successfully 📚');
+        return redirect()->route('show.my.borrowings', $userId)->with('success', 'Book returned successfully 📚');
     }
 
-    
+
 }

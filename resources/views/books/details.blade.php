@@ -46,7 +46,7 @@
           $book->currentBorrowing &&
           $book->currentBorrowing->user_id === Auth::user()->id
           )
-        <form action="{{route('books.return',  $book->currentBorrowing->user_id)}}" method="POST" onsubmit="return confirm('Return {{$book->title}}?')">
+        <form action="{{route('books.return',  $book->id)}}" method="POST" onsubmit="return confirm('Return {{$book->title}}?')">
             @csrf
             <button type="submit" class="btn btn-sm btn-success px-4 text-sm float-start">Return the Book</button>
         </form>

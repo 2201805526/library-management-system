@@ -11,31 +11,38 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use function PHPUnit\Framework\isNan;
+use function PHPUnit\Framework\isNull;
+
 class BookController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $books = Book::with(['author', 'category'])->get();
 
         return view('books.index', compact('books'));
     }
 
     //show form to create a new book
-    public function create(){
-            $categories = Category::all();
-            $authors = Author::all();
+    public function create()
+    {
+        $categories = Category::all();
+        $authors = Author::all();
 
         return view('books.create', compact('authors', 'categories'));
     }
 
     //show single book's details
-    public function show(String $id): View{
+    public function show(String $id): View
+    {
 
         $book = Book::findOrFail($id);
         return view('books.details', compact('book'));
     }
 
     // show form to edit an existing book
-    public function edit(String $id){
+    public function edit(String $id)
+    {
         $book = Book::findOrFail($id);
         $categories = Category::all();
         $authors = Author::all();
@@ -44,13 +51,14 @@ class BookController extends Controller
     }
 
     // store a new book
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $validated = $request->validate([
             'title' => 'required|string|max:200',
             'language' => 'required|in:English,Arabic,French',
             'publication_year' => 'required|integer|digits:4',
             'available' => 'required|boolean',
-            'description'=> 'nullable|text',
+            'description' => 'nullable|text',
             'author_id' => 'required|exists:authors,id',
             'category_id' => 'required|exists:categories,id',
         ]);
@@ -61,14 +69,15 @@ class BookController extends Controller
         return redirect()->route('books.index')->with('success', 'Book added successfully!');
     }
 
-    public function update(Request $request, String $id){
+    public function update(Request $request, String $id)
+    {
 
         $validated = $request->validate([
             'title' => 'required|string|max:200',
             'language' => 'required|in:English,Arabic,French',
             'publication_year' => 'required|integer|digits:4',
             'available' => 'required|boolean',
-            'description'=> 'nullable|text',
+            'description' => 'nullable|text',
             'author_id' => 'required|exists:authors,id',
             'category_id' => 'required|exists:categories,id',
         ]);
@@ -82,19 +91,24 @@ class BookController extends Controller
         return redirect()->route('books.index')->with('success', 'Book updated successfully! 🔃');
     }
 
-    public function return(String $id ){
+    public function return(String $id)
+    {
+        $userId = Auth::user()->id;
         $book = Book::findOrFail($id);
 
         $borrowing = $book->borrowings()
-                    ->where('user_id', Auth::user()->id)
-                    ->whereNull('returned_at')
-                    ->first();
+            ->where('user_id', $userId)
+            ->whereNull('returned_at')
+            ->first();
 
-        if(!$borrowing){
+        if (isNull($borrowing)) {
             return back()->with('fail', 'You cannot return this book ❗');
         }
-        $borrowing->update(['returned_at'=> now()]);
-        $borrowing->update(['available'=> true]);
+
+        $borrowing->returned_at = now();
+        $borrowing->book->available = true;
+        $borrowing->book->save();
+        $borrowing->save();
 
         $fineAmount = $borrowing->calculateFine();
 
@@ -103,40 +117,35 @@ class BookController extends Controller
                 'borrowing_id' => $borrowing->id,
                 'amount' => $fineAmount,
                 'isPaid' => false,
-            ]);
+            ])->save();
         }
 
         return redirect()->route('books.index')->with('success', 'Book returned successfully 📚');
     }
-    public function borrow(Request $request, String $id){
-
+    public function borrow(String $id)
+    {
 
         $book = Book::findOrFail($id);
-        if($book->available){
-            $request->validate([
-                'user_id'=> 'required|exists:users,id',
-                'book_id'=> 'required|exists:books,id',
-            ]);
+        $userId = Auth::user()->id;
+        if ($book->available) {
+
             $borrowedAt = now();
             $dueAt = now()->addDays(14);
+            $book->available = false;
+            $book->save();
 
             Borrowing::create([
-                'user_id' => $request->user_id,
-                'book_id' => $request->book_id,
+                'user_id' => $userId,
+                'book_id' => $book->id,
                 'borrowed_at' => $borrowedAt,
                 'due_at' => $dueAt,
                 'returned_at' => null,
-            ]);
-
-            return redirect()->route('show.my.borrowings', $request->user_id)->with('success', 'Book\'s been added to your borrowings 📚');
+            ])->save();
 
 
-
-        }else{
-            return redirect()->route('show.my.borrowings', $request->user_id)->with('fail', 'sorry this book is not available ❗') ;
+            return redirect()->route('show.my.borrowings', $userId)->with('success', 'Book\'s been added to your borrowings 📚');
+        } else {
+            return redirect()->route('show.my.borrowings', $userId)->with('fail', 'sorry this book is not available ❗');
         }
-
-
-
     }
 }

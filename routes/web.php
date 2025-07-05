@@ -7,7 +7,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\FineController;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,13 +48,13 @@ Route::middleware(['auth', 'role:admin,librarians'])->group(function(){
 
     //books
     Route::controller(BookController::class)->group(function(){
-    // Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
-    Route::get('/books/create',  'create')->name('books.create');
-    Route::post('/books/store/{id}', 'store')->name('books.store');
-    Route::get('/books/{id}/edit', 'edit')->name('books.edit');
-    // Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
-    Route::put('/books/{id}', 'update')->name('books.update');
-    Route::delete('books/{id}', 'destroy')->name('books.destroy');
+        // Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
+        Route::get('/books/create',  'create')->name('books.create');
+        Route::post('/books/store/{id}', 'store')->name('books.store');
+        Route::get('/books/{id}/edit', 'edit')->name('books.edit');
+        // Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
+        Route::put('/books/{id}', 'update')->name('books.update');
+        Route::delete('books/{id}', 'destroy')->name('books.destroy');
     });
 
     //fines
@@ -98,6 +97,7 @@ Route::middleware(['auth', 'role:student'])->group(function(){
     // Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
     // Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
     Route::post('/books/{id}/return', [BookController::class, 'return'])->name('books.return');
+    Route::post('books/details/{id}', [BookController::class, 'borrow'])->name('borrow.book');
 
     //fines
     Route::get('/fines/index', [FineController::class, 'index'])->name('fines.index');
@@ -107,6 +107,5 @@ Route::middleware(['auth', 'role:student'])->group(function(){
     Route::get('borrowings/my/{id}', [BorrowingController::class, 'showMy'])->name('show.my.borrowings');
     Route::put('borrowings/my/{id}', [BorrowingController::class, 'return'])->name('borrowing.return');
 
-    Route::post('books/details/{id}', [BookController::class, 'borrow'])->name('borrow.book');
 
 });
