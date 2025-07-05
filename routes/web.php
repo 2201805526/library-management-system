@@ -18,10 +18,12 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware('auth')
     ->name('dashboard');
 
-Route::middleware('auth')->group(function(){
+Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
+    Route::post('/books', [BookController::class, 'store'])->name('books.store');
 });
 
 /*
@@ -29,8 +31,7 @@ Route::middleware('auth')->group(function(){
 */
 
 //routes for all users
-Route::middleware(['auth'])->group(function(){
-
+Route::middleware(['auth'])->group(function () {
 
     //books
     Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
@@ -38,60 +39,57 @@ Route::middleware(['auth'])->group(function(){
 
     //fines
     Route::delete('/fines/{id}/pay', [FineController::class, 'pay'])->name('fines.pay');
-
-
-
 });
 
 //routes for admins and librarians
-Route::middleware(['auth', 'role:admin,librarians'])->group(function(){
+Route::middleware(['auth', 'role:admin,librarians'])->group(function () {
 
     //books
-    Route::controller(BookController::class)->group(function(){
-        // Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
-        Route::get('/books/create',  'create')->name('books.create');
-        Route::post('/books/store/{id}', 'store')->name('books.store');
-        Route::get('/books/{id}/edit', 'edit')->name('books.edit');
-        // Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
-        Route::put('/books/{id}', 'update')->name('books.update');
-        Route::delete('books/{id}', 'destroy')->name('books.destroy');
-    });
+    Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
+    Route::post('/books', [BookController::class, 'store'])->name('books.store');
+
+    // Route::get('/books/{id}/edit', [BookController::class, 'edit'])->name('books.edit');
+    // Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
+    // Route::delete('books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
 
     //fines
-    Route::controller(FineController::class)->group(function(){
-        Route::get('/fines/all', 'showAll')->name('fines.all');
-    });
+    Route::get('/fines/all', [FineController::class, 'showAll'])->name('fines.all');
 
     //borrowings
     Route::get('/borrowings', [BorrowingController::class, 'showAll'])->name('show.all.borrowings');
-
 });
 
 
 
 // routes for admins only 💻
-Route::middleware(['auth', 'role:admin'])->group(function(){
+Route::middleware(['auth', 'role:admin'])->group(function () {
     // routes
 
     //users
-    Route::controller(UserController::class)->group(function(){
-        Route::get('/users/index', 'index')->name('users.index');
-        Route::get('/users/show/{id}', 'show')->name('users.show');
-        Route::post('/users/store/{id}', 'store')->name('users.store');
-        Route::get('/users/{id}/edit', 'edit')->name('users.edit');
-        Route::put('/users/{id}', 'update')->name('users.update');
-        Route::delete('/users/{id}', 'destroy')->name('users.destroy');
-    });
+    Route::get('/users/index', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/show/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::post('/users/store/{id}', [UserController::class, 'store'])->name('users.store');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
 });
 
 // routes for librarians only 📚
-Route::middleware(['auth', 'role:librarian'])->group(function(){
+Route::middleware(['auth', 'role:librarian'])->group(function () {
 
+    //books
+    Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
+    Route::post('/books', [BookController::class, 'store'])->name('books.store');
 
+    Route::get('/books/{id}/edit', [BookController::class, 'edit'])->name('books.edit');
+    Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
+
+    Route::delete('books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
 });
 
 // routes for students only 👨🏼‍🎓
-Route::middleware(['auth', 'role:student'])->group(function(){
+Route::middleware(['auth', 'role:student'])->group(function () {
 
     //books
     // Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
@@ -106,6 +104,4 @@ Route::middleware(['auth', 'role:student'])->group(function(){
     //borrowings
     Route::get('borrowings/my/{id}', [BorrowingController::class, 'showMy'])->name('show.my.borrowings');
     Route::put('borrowings/my/{id}', [BorrowingController::class, 'return'])->name('borrowing.return');
-
-
 });

@@ -1,58 +1,77 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>Add New Book</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Add New Book</h1>
+
+    {{-- Show validation errors --}}
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <form action="{{route('books.store')}}" method="POST">
         @csrf
 
-        <div>
-            <label>Title: </label>
-            <input type="text" name="title" required>
+        {{-- title --}}
+        <div class="mb-2">
+            <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+            <input type="text" name="title" id="title" class="form-control " required>
         </div>
 
-        <div>
-            <label>Language: </label>
-            <select name="language" required>
+        {{-- language --}}
+        <div class="mb-2">
+            <label for="language" class="form-label">Language<span class="text-danger">*</span> </label>
+            <select name="language" id="language" class="form-select" required>
                 <option value="English">English</option>
                 <option value="Arabic">Arabic</option>
                 <option value="French">French</option>
             </select>
         </div>
 
-        <div>
-            <label>Publication Year: </label>
-            <input type="number" name="publication_year" required>
+        {{-- publication_year --}}
+        <div class="mb-2">
+            <label for="publication_year" class="form-label">Publication Year</label>
+            <input required type="number" name="publication_year" id="publication_year" class="form-control" value="2000">
         </div>
 
-        <div>
-            <label>Available: </label>
-            <select name="available" required>
-                <option value="1">Yes</option>
-                <option value="0">No</option>
-            </select>
+        {{-- description --}}
+        <div class="mb-2">
+            <label for="description" class="form-label">Description</label>
+            <textarea required name="description" id="description" rows="2" class="form-control"></textarea>
         </div>
 
-        <div>
-            <label>Author: </label>
-            <select name="author_id" required>
+        {{-- author --}}
+        <div class="mb-2">
+            <label for="author_id" class="form-label">Author <span class="text-danger">*</span></label>
+            <select name="author_id" id="author_id" class="form-select" required>
                 @foreach($authors as $author)
                     <option value="{{$author->id}}">{{$author->name}}</option>
                 @endforeach
             </select>
         </div>
 
-        <div>
-            <label>Category: </label>
-            <select name="category_id" required>
+        {{-- category --}}
+        <div class="mb-2">
+            <label for="category_id" class="form-label">Category <span class="text-danger">*</span></label>
+            <select name="category_id" id="category_id" class="form-select" required>
                 @foreach($categories as $category)
                     <option value="{{$category->id}}">{{ $category->name }}</option>
                 @endforeach
             </select>
         </div>
 
-        <button type="submit">Add Book</button>
+        {{-- submit button --}}
+        <div class="text-start ">
+            <button type="submit" class="btn btn-outline-primary">
+                </i> Add Book
+            </button>
+        </div>
     </form>
 </div>
 

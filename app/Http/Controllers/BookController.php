@@ -10,8 +10,6 @@ use App\Models\Fine;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
-use function PHPUnit\Framework\isNan;
 use function PHPUnit\Framework\isNull;
 
 class BookController extends Controller
@@ -23,14 +21,6 @@ class BookController extends Controller
         return view('books.index', compact('books'));
     }
 
-    //show form to create a new book
-    public function create()
-    {
-        $categories = Category::all();
-        $authors = Author::all();
-
-        return view('books.create', compact('authors', 'categories'));
-    }
 
     //show single book's details
     public function show(String $id): View
@@ -38,6 +28,43 @@ class BookController extends Controller
 
         $book = Book::findOrFail($id);
         return view('books.details', compact('book'));
+    }
+
+
+    //show form to create a new book
+    public function create()
+    {
+        $categories = Category::all();
+        $authors = Author::all();
+
+        return view('books.create', compact( 'authors', 'categories'));
+    }
+
+    // store a new book
+    public function store(Request $request)
+    {
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:200',
+            'language' => 'required|in:English,Arabic,French',
+            'publication_year' => 'required|integer|digits:4',
+            'description' => 'nullable|string|max:1000',
+            'author_id' => 'required|exists:authors,id',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        //to create the book
+        Book::create([
+            'title'=> $validated['title'],
+            'language'=>$validated['language'],
+            'publication_year' => $validated['publication_year'],
+            'description'=>$validated['description'],
+            'author_id'=> $validated['author_id'],
+            'category_id'=>$validated['category_id'],
+            'available'=> true,
+        ]);
+
+        return redirect()->route('books.index')->with('success', 'Book added successfully 📚❕');
     }
 
     // show form to edit an existing book
@@ -48,25 +75,6 @@ class BookController extends Controller
         $authors = Author::all();
 
         return view('books.edit', compact('book', 'authors', 'categories'));
-    }
-
-    // store a new book
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:200',
-            'language' => 'required|in:English,Arabic,French',
-            'publication_year' => 'required|integer|digits:4',
-            'available' => 'required|boolean',
-            'description' => 'nullable|text',
-            'author_id' => 'required|exists:authors,id',
-            'category_id' => 'required|exists:categories,id',
-        ]);
-
-        //to create the book
-        Book::create($validated);
-
-        return redirect()->route('books.index')->with('success', 'Book added successfully!');
     }
 
     public function update(Request $request, String $id)
@@ -89,6 +97,13 @@ class BookController extends Controller
         $book->update($validated);
 
         return redirect()->route('books.index')->with('success', 'Book updated successfully! 🔃');
+    }
+
+    public function destroy(String $id){
+        $book = Book::findOrFail($id);
+        $book->delete();
+
+        return redirect()->route('books.index')->with('success', 'Book deleted successfully ❕');
     }
 
     public function return(String $id)

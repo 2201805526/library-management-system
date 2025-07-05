@@ -15,15 +15,15 @@
         {{-- an admin or librarian can either edit or delete this book here 👇🏼 --}}
         @if (Auth::user()->role === 'admin' || Auth::user()->role === 'librarian')
         {{-- edit  --}}
-        <form action="{{route('books.edit', $book->id)}}" method="POST">
+        <form action="{{route('books.edit', $book->id)}}" method="GET">
             @csrf
-            @method('PUT')
             <button type="submit" class="btn btn-sm btn-outline-warning">Edit {{$book->title}}</button>
         </form>
+
         {{-- delete --}}
-        <form action="{{route('books.destroy', $book->id)}}" method="post">
+        <form action="{{route('books.destroy', $book->id)}}" method="POST">
             @csrf
-            $@method('DELETE')
+            @method('DELETE')
             <button type="submit" class="btn btn-sm btn-outline-danger">Delete {{$book->title}}</button>
         </form>
         {{--
