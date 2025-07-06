@@ -11,12 +11,12 @@
     <p><strong>Role:</strong> {{ $user->role }}</p>
     <p><strong>Created at:</strong> {{ $user->created_at }}</p>
 
-            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{{route('users.edit', $user->id)}}" class="btn btn-sm btn-warning me-2">Edit</a>
 
-            <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Delete {{$user->name}}\'s profile?')">
+            <form action="{{route('users.destroy', $user->id)}}" method="POST" style="display:inline-block;" onsubmit="return confirm('Delete {{$user->name}}\'s profile?')">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
             </form>
 
 </div>

@@ -14,9 +14,19 @@ Route::get('/', function () {
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware('auth')
-    ->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+//fines
+Route::get('/fines/all', [FineController::class, 'showAll'])->middleware(['auth', 'role:admin'])->name('fines.all');
+//borrowings
+Route::get('/borrowings', [BorrowingController::class, 'showAll'])->middleware(['auth', 'role:admin'])->name('show.all.borrowings');
+Route::get('/history', [BorrowingController::class, 'showHistory'])->middleware(['auth', 'role:admin'])->name('borrowings.history');
+
+//fines
+Route::get('/fines/all', [FineController::class, 'showAll'])->middleware(['auth', 'role:librarian'])->name('fines.all');
+//borrowings
+Route::get('/borrowings', [BorrowingController::class, 'showAll'])->middleware(['auth', 'role:librarian'])->name('show.all.borrowings');
+Route::get('/history', [BorrowingController::class, 'showHistory'])->middleware(['auth', 'role:librarian'])->name('borrowings.history');
+
 
 Route::middleware('auth')->group(function () {
 
@@ -24,11 +34,18 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
     Route::post('/books', [BookController::class, 'store'])->name('books.store');
+
+    //fines
+    Route::get('/fines/all', [FineController::class, 'showAll'])->name('fines.all');
+
+    //borrowings
+    Route::get('/borrowings', [BorrowingController::class, 'showAll'])->name('show.all.borrowings');
+    Route::get('/history', [BorrowingController::class, 'showHistory'])->name('borrowings.history');
 });
 
-/*
- -----------------------------------------------------------------------------------------------------------------------------------------
-*/
+
+ //-------------------------------------------------------------------
+
 
 //routes for all users
 Route::middleware(['auth'])->group(function () {
@@ -37,12 +54,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
 
-    //fines
-    Route::delete('/fines/{id}/pay', [FineController::class, 'pay'])->name('fines.pay');
 });
 
 //routes for admins and librarians
-Route::middleware(['auth', 'role:admin,librarians'])->group(function () {
+Route::middleware(['auth', 'role:admin,librarian'])->group(function () {
 
     //books
     Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
@@ -57,6 +72,7 @@ Route::middleware(['auth', 'role:admin,librarians'])->group(function () {
 
     //borrowings
     Route::get('/borrowings', [BorrowingController::class, 'showAll'])->name('show.all.borrowings');
+    Route::get('/history', [BorrowingController::class, 'showHistory'])->name('borrowings.history');
 });
 
 
@@ -69,8 +85,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/users/index', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/show/{id}', [UserController::class, 'show'])->name('users.show');
     Route::post('/users/store/{id}', [UserController::class, 'store'])->name('users.store');
+
     Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
 });
@@ -87,12 +105,6 @@ Route::middleware(['auth', 'role:librarian'])->group(function () {
 
     Route::delete('books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
 
-    //borrowings
-    Route::get('borrowings', [BorrowingController::class, 'showAll'])->name('show.all.borrowings');
-    Route::get('history', [BorrowingController::class, 'showHistory'])->name('borrowings.history');
-
-    //fines
-    Route::get('/fines/all', [FineController::class, 'showAll'])->name('fines.all');
 
 });
 

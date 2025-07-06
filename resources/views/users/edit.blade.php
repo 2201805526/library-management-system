@@ -4,46 +4,71 @@
 @section('content')
 <div class="container">
     <h1>Edit User</h1>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-    <form action="{{ route('users.update', $user->id)}}" method="POST">
+    <form action="{{route('users.update', $user->id)}}" method="POST">
         @csrf
         @method('PUT')
 
-        {{-- name --}}
-        <div class="form-group">
-            <label>Name:</label>
-            <input class="form-control" type="text" name="name" value="{{ $user->name }}" required>
-        </div> <br>
+       {{-- Name --}}
+       <div class="mb-3">
+        <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+        <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $user->name) }}" required>
+    </div>
 
-        {{-- email --}}
-        <div class="form-group">
-            <label>Email:</label>
-            <input class="form-control" type="email" name="email" value="{{ $user->email }}" required>
-        </div> <br>
+    {{-- Email --}}
+    <div class="mb-3">
+        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+        <input type="email" name="email" id="email" class="form-control" value="{{ old('email', $user->email) }}" required>
+    </div>
 
+    {{-- role --}}
+    <div class="mb-3">
+        <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
+        <select name="role" id="role" class="form-select" required>
+            <option value="">Select Role</option>
+            @foreach (['admin', 'librarian', 'student'] as $role)
+                <option
+                    value="{{ $role }}"
+                    {{ old('role', $user->role) == $role ? 'selected' : '' }}>
+                    {{ ucfirst($role) }}
+                </option>
+            @endforeach
+        </select>
+    </div>
 
-        {{-- password --}}
-        <div class="form-group">
-            <label for="password">New Password (leave blank to keep current)</label>
-            <input type="password" name="password" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="password_confirmation">Confirm New Password</label>
-            <input type="password" name="password_confirmation" class="form-control">
-        </div> <br>
+    {{-- password --}}
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" name="password" id="password" class="form-control" placeholder="Leave blank to keep current password">
+    </div>
 
-        {{-- role --}}
-        <div class="form-group">
-            <label>Role:</label>
-            <select class="form-control" name="role" required>
-                <option value="English" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                <option value="Arabic" {{ $user->role == 'librarian' ? 'selected' : '' }}>Librarian</option>
-                <option value="French" {{ $user->role == 'student' ? 'selected' : '' }}>Student</option>
-            </select>
-        </div> <br>
+    {{-- confirmation field --}}
+    <div class="mb-3">
+        <label for="password_confirmation" class="form-label">Confirm Password</label>
+        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
+    </div>
 
-        <button class="btn btn-outline-warning" type="submit">Update {{$user->name}}'s info</button>
+    {{-- email verified at (display only) --}}
+    <div class="mb-3">
+        <label class="form-label">Email Verified At</label>
+        <input type="text" class="form-control" value="{{ $user->email_verified_at ?? 'Not verified' }}" readonly>
+    </div>
+
+    {{-- submit --}}
+    <div class="text-start">
+        <button type="submit" class="btn btn-outline-warning">
+            Update {{$user->name}}
+        </button>
+    </div>
     </form>
 </div>
-
 @endsection

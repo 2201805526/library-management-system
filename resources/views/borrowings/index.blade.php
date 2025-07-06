@@ -9,12 +9,12 @@
         {{ session('fail') }}
     </div>
     @elseif (session('success'))
-    <div class="alert alert-light">
+    <div class="alert alert-success">
         {{ session('success') }}
     </div>
     @endif
-    <div class="alert alert-success">
-        مرحباً {{ auth()->user()->name }}! يمكنك عرض الاستعارات.
+    <div class="alert alert-dark">
+        Current Borrowings {{ auth()->user()->name }} ❕
     </div>
 
     <ul class="list-group">
