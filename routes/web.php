@@ -86,6 +86,14 @@ Route::middleware(['auth', 'role:librarian'])->group(function () {
     Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
 
     Route::delete('books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
+
+    //borrowings
+    Route::get('borrowings', [BorrowingController::class, 'showAll'])->name('show.all.borrowings');
+    Route::get('history', [BorrowingController::class, 'showHistory'])->name('borrowings.history');
+
+    //fines
+    Route::get('/fines/all', [FineController::class, 'showAll'])->name('fines.all');
+
 });
 
 // routes for students only 👨🏼‍🎓
@@ -103,5 +111,6 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 
     //borrowings
     Route::get('borrowings/my/{id}', [BorrowingController::class, 'showMy'])->name('show.my.borrowings');
+    Route::get('borrowings/my-history/{id}', [BorrowingController::class, 'showMyHistory'])->name('show.my.history');
     Route::put('borrowings/my/{id}', [BorrowingController::class, 'return'])->name('borrowing.return');
 });

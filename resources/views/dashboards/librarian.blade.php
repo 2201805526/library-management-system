@@ -9,8 +9,11 @@
 
     <ul class="list-group">
         <li class="list-group-item"><a href="{{ route('books.index') }}">إدارة الكتب</a></li>
-        <li class="list-group-item"><a href="#">استعراض الاستعارات</a></li>
-        <li class="list-group-item"><a href="#">متابعة الغرامات</a></li>
+        <li class="list-group-item"><a href="{{route('show.all.borrowings')}}">استعراض الاستعارات</a></li>
+        <li class="list-group-item"><a href="{{route('borrowings.history')}}"> استعراض الاستعارات القديمة</a></li>
+        <li class="list-group-item"><a href="{{route('fines.all')}}">متابعة الغرامات</a></li>
+        <li class="list-group-item"><a href="#"> Authors</a></li>
+        <li class="list-group-item"><a href="#">Categories </a></li>
     </ul>
 </div>
 @endsection

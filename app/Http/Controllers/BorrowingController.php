@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Borrowing;
-use Illuminate\Support\Facades\DB;
 use App\Models\Fine;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +14,17 @@ class BorrowingController extends Controller
     public function showAll(){
         $borrowings = Borrowing::with(['user', 'book', 'fine'])->get();
         return view('borrowings.index', compact('borrowings'));
+    }
+
+    public function showHistory(){
+
+        $borrowings = Borrowing::whereNotNull('returned_at')->with(['user', 'book', 'fine'])->get();
+        return view('borrowings.history', compact('borrowings'));
+    }
+
+    public function showMyHistory(){
+        $borrowings = Borrowing::whereNotNull('returned_at')->with(['user', 'book', 'fine'])->get();
+        return view('borrowings.myHistory', compact('borrowings'));
     }
 
     public function showMy(String $id){

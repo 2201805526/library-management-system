@@ -21,25 +21,19 @@
       @if ($borrowing->user_id === Auth::user()->id)
 
       <ul class="list-group">
-          <li class="list-group-item">user id : {{$borrowing->user_id}}</li>
-          <li class="list-group-item">Book's Title : {{$borrowing->book->title}}</li>
-          <li class="list-group-item">Borrowed at : {{$borrowing->borrowed_at}}</li>
-          <li class="list-group-item">Due at : {{$borrowing->due_at}}</li>
-
-            @if(!is_null($borrowing->returned_at))
-            <li class="list-group-item">This borrowing was returned at : {{$borrowing->returned_at}}</li>
-
-            @elseif(
-                is_null($borrowing->returned_at) &&
-                !$borrowing->book->available
-                )
-            <li class="list-group-item">
+            @if(is_null($borrowing->returned_at) && !$borrowing->book->available)
+                <li class="list-group-item">user id : {{$borrowing->user_id}}</li>
+                <li class="list-group-item">Student's name : {{$borrowing->user->name}}</li>
+                <li class="list-group-item">Book's Title : {{$borrowing->book->title}}</li>
+                <li class="list-group-item">Borrowed at : {{$borrowing->borrowed_at}}</li>
+                <li class="list-group-item">Due at : {{$borrowing->due_at}}</li>
+                <li class="list-group-item">
                 <form class="float" action="{{route('borrowing.return',  $borrowing->id)}}" method="POST" onsubmit="return confirm('Return {{$borrowing->book->title}}?')">
                     @csrf
                     @method('PUT')
                     <button type="submit" class="btn btn-sm btn-success px-4 text-sm float-start">Return the Book</button>
                 </form>
-            </li>
+                </li>
             @endif
             <br>
         </ul>
