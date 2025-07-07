@@ -21,7 +21,6 @@ class BookController extends Controller
         return view('books.index', compact('books'));
     }
 
-
     //show single book's details
     public function show(String $id): View
     {
@@ -29,7 +28,6 @@ class BookController extends Controller
         $book = Book::findOrFail($id);
         return view('books.details', compact('book'));
     }
-
 
     //show form to create a new book
     public function create()
@@ -85,7 +83,7 @@ class BookController extends Controller
             'language' => 'required|in:English,Arabic,French',
             'publication_year' => 'required|integer|digits:4',
             'available' => 'required|boolean',
-            'description' => 'nullable|text',
+            'description' => 'nullable|string|max:1000',
             'author_id' => 'required|exists:authors,id',
             'category_id' => 'required|exists:categories,id',
         ]);

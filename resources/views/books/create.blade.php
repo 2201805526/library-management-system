@@ -21,7 +21,7 @@
         {{-- title --}}
         <div class="mb-2">
             <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
-            <input type="text" name="title" id="title" class="form-control " required>
+            <input type="text" name="title" id="title" class="form-control" required>
         </div>
 
         {{-- language --}}
@@ -68,8 +68,8 @@
 
         {{-- submit button --}}
         <div class="text-start ">
-            <button type="submit" class="btn btn-outline-primary">
-                </i> Add Book
+            <button type="submit" class="btn btn-outline-success">
+                Add Book
             </button>
         </div>
     </form>

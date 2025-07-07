@@ -14,6 +14,8 @@
         <li class="list-group-item"><a href="{{route('books.index')}}">تصفح الكتب</a></li>
         <li class="list-group-item"><a href="{{route('show.my.borrowings', $userID)}}">كتبي المستعارة</a></li>
         <li class="list-group-item"><a href="{{route('show.my.history',$userID)}}">كتبي history</a></li>
+        <li class="list-group-item"><a href="{{route('authors.index')}}">Authors</a></li>
+        <li class="list-group-item"><a href="{{route('categories.index')}}">Categories</a></li>
         <li class="list-group-item"><a href="{{route('fines.index')}}">غراماتي</a></li>
     </ul>
     <br>

@@ -2,10 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BorrowingController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FineController;
 
 Route::get('/', function () {
@@ -54,6 +56,31 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
 
+    //authors
+    Route::get('/author/index', [AuthorController::class, 'index'])->name('authors.index');
+    Route::get('/author/{id}', [AuthorController::class, 'show'])->name('authors.show');
+
+    Route::get('authors/create', [AuthorController::class, 'create'])->name('authors.create');
+    Route::post('authors', [AuthorController::class, 'store'])->name('authors.store');
+
+
+    Route::get('/author/{id}/edit', [AuthorController::class, 'edit'])->name('authors.edit');
+    Route::put('/author/{id}', [AuthorController::class, 'update'])->name('authors.update');
+
+    Route::delete('/author/{id}', [AuthorController::class, 'destroy'])->name('authors.destroy');
+
+    //categories
+    Route::get('/category/index', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/category/{id}', [CategoryController::class, 'show'])->name('categories.show');
+
+    Route::get('/category/create', [CategoryController::class, 'create'])->name('categories.create');
+    Route::post('/category', [CategoryController::class, 'store'])->name('categories.store');
+
+
+    Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('/category/{id}', [CategoryController::class, 'update'])->name('categories.update');
+
+    Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });
 
 //routes for admins and librarians
