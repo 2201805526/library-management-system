@@ -7,13 +7,17 @@
     <div class="alert alert-success text-center">
         {{ session('success') }}
     </div>
+    @elseif (session('fail'))
+    <div class="alert alert-danger text-center">
+        {{ session('fail') }}
+    </div>
     @endif
     <div class="alert alert-success text-center">
         مرحباً {{ auth()->user()->name }}! يمكنك عرض الكتب والاستعارات.
     </div>
 
     <ul class="list-group text-center">
-        @if (auth()->user()->role === 'librarian')
+        @if (auth()->user()->role === 'admin' || auth()->user()->role === 'librarian')
         <ul class="list-group">
             <li class="list-group-item">
                 <a href="{{ route('books.create') }}" class="btn btn-sm btn-outline-success">

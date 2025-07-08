@@ -7,6 +7,7 @@ use App\Models\Author;
 use App\Models\Borrowing;
 use App\Models\Category;
 use App\Models\Fine;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,8 +25,8 @@ class BookController extends Controller
     //show single book's details
     public function show(String $id): View
     {
-
         $book = Book::findOrFail($id);
+        $book->with('borrowings')->get();
         return view('books.details', compact('book'));
     }
 
@@ -35,7 +36,7 @@ class BookController extends Controller
         $categories = Category::all();
         $authors = Author::all();
 
-        return view('books.create', compact( 'authors', 'categories'));
+        return view('books.create', compact('authors', 'categories'));
     }
 
     // store a new book
@@ -53,13 +54,13 @@ class BookController extends Controller
 
         //to create the book
         Book::create([
-            'title'=> $validated['title'],
-            'language'=>$validated['language'],
+            'title' => $validated['title'],
+            'language' => $validated['language'],
             'publication_year' => $validated['publication_year'],
-            'description'=>$validated['description'],
-            'author_id'=> $validated['author_id'],
-            'category_id'=>$validated['category_id'],
-            'available'=> true,
+            'description' => $validated['description'],
+            'author_id' => $validated['author_id'],
+            'category_id' => $validated['category_id'],
+            'available' => true,
         ]);
 
         return redirect()->route('books.index')->with('success', 'Book added successfully 📚❕');
@@ -97,7 +98,8 @@ class BookController extends Controller
         return redirect()->route('books.index')->with('success', 'Book updated successfully! 🔃');
     }
 
-    public function destroy(String $id){
+    public function destroy(String $id)
+    {
         $book = Book::findOrFail($id);
         $book->delete();
 
@@ -109,19 +111,19 @@ class BookController extends Controller
         $userId = Auth::user()->id;
         $book = Book::findOrFail($id);
 
-        $borrowing = $book->borrowings()
-            ->where('user_id', $userId)
-            ->whereNull('returned_at')
-            ->first();
+        $borrowing = $book->currentBorrowing()->first();
 
-        if (isNull($borrowing)) {
-            return back()->with('fail', 'You cannot return this book ❗');
+
+        if (!$borrowing) {
+            return redirect()->route('books.index')->with('fail', 'You cannot return this book ❗');
         }
 
-        $borrowing->returned_at = now();
-        $borrowing->book->available = true;
-        $borrowing->book->save();
+        $book->available = true;
+        $book->save();
+
+        $borrowing->returned_at = Carbon::now();
         $borrowing->save();
+
 
         $fineAmount = $borrowing->calculateFine();
 
@@ -130,7 +132,7 @@ class BookController extends Controller
                 'borrowing_id' => $borrowing->id,
                 'amount' => $fineAmount,
                 'isPaid' => false,
-            ])->save();
+            ]);
         }
 
         return redirect()->route('books.index')->with('success', 'Book returned successfully 📚');

@@ -21,7 +21,7 @@
       @if ($borrowing->user_id === Auth::user()->id)
 
       <ul class="list-group">
-            @if(is_null($borrowing->returned_at) && !$borrowing->book->available)
+            @if(is_null($borrowing->returned_at))
                 <li class="list-group-item">user id : {{$borrowing->user_id}}</li>
                 <li class="list-group-item">Student's name : {{$borrowing->user->name}}</li>
                 <li class="list-group-item">Book's Title : {{$borrowing->book->title}}</li>

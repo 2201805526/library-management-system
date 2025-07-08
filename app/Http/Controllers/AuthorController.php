@@ -44,7 +44,7 @@ class AuthorController extends Controller
         $author = Author::findOrFail($id);
         $author->update($validated);
 
-        return redirect()->route('authors.index')->with('success', 'Author\'s info updated successfully 🔃');
+        return redirect()->route('authors.index')->with('success', 'Author\'s been updated successfully 🔃');
     }
 
     public function destroy(String $id)

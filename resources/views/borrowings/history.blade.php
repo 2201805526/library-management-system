@@ -19,13 +19,13 @@
 
     <ul class="list-group">
       @foreach ($borrowings as $borrowing)
-      @if ($borrowing->book->available  && !is_null($borrowing->returned_at))   
+      @if ($borrowing->book->available  && !is_null($borrowing->returned_at))
         <ul class="list-group">
           <li class="list-group-item">Borrowing id : {{$borrowing->id}}</li>
-          <li class="list-group-item">user id : {{$borrowing->user_id}}</li>
+          <li class="list-group-item">user id : {{$borrowing->user->name}}</li>
           <li class="list-group-item">Book's Title : {{$borrowing->book->title}}</li>
           <li class="list-group-item">Borrowed at : {{$borrowing->borrowed_at}}</li>
-          <li class="list-group-item">Due at : {{$borrowing->due_at}}</li>
+          <li class="list-group-item">Returned at : {{$borrowing->returned_at}}</li>
          <br>
         </ul>
       @endif

@@ -16,22 +16,23 @@ class BorrowingController extends Controller
         return view('borrowings.index', compact('borrowings'));
     }
 
+    public function showMy(String $id){
+        $borrowings = Borrowing::findOrFail($id)->with(['user', 'book', 'fine'])->get();
+
+        return view('borrowings.my', compact('borrowings'));
+    }
+
     public function showHistory(){
 
         $borrowings = Borrowing::whereNotNull('returned_at')->with(['user', 'book', 'fine'])->get();
         return view('borrowings.history', compact('borrowings'));
     }
 
-    public function showMyHistory(){
-        $borrowings = Borrowing::whereNotNull('returned_at')->with(['user', 'book', 'fine'])->get();
+    public function showMyHistory(String $id){
+        $borrowings = Borrowing::whereNotNull('returned_at')->where('user_id', $id)->with(['user', 'book', 'fine'])->get();
         return view('borrowings.myHistory', compact('borrowings'));
     }
 
-    public function showMy(String $id){
-        $borrowings = Borrowing::findOrFail($id)->with(['user', 'book', 'fine'])->get();
-
-        return view('borrowings.my', compact('borrowings'));
-    }
 
     public function return (String $id){
 

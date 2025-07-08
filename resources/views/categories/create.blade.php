@@ -26,7 +26,7 @@
         {{-- description --}}
         <div class="mb-2">
             <label for="description" class="form-label">Description </label>
-            <textarea required name="description" id="description" rows="2" class="form-control"></textarea>
+            <textarea name="description" id="description" rows="2" class="form-control"></textarea>
         </div>
 
         {{-- submit button --}}

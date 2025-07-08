@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Book;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -18,11 +19,32 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $books = Book::where('category_id', $id)->get();
 
-        return view('categories.show', compact('category', 'books'));
+        return view('categories.details', compact('category', 'books'));
     }
-    public function edit(String $id) {}
-    public function update(Request $request, String $id){}
-    public function destroy() {}
+    public function edit(String $id) {
+        $category = Category::findOrFail($id);
+        $books = Book::where('category_id', $id)->get();
+
+        return view('categories.edit', compact('category', 'books'));
+    }
+    public function update(Request $request, String $id){
+        $validated = $request->validate([
+            'name'=> 'required|string|max:200',
+            'description'=> 'nullable|string|max:1000',
+        ]);
+
+        $category = Category::findOrFail($id);
+        $category->update($validated);
+
+        return redirect()->route('categories.index')->with('success', 'Category\'s been updated successfully 🔃');
+    }
+    public function destroy(String $id) {
+
+        $category = Category::findOrFail($id);
+        $category->delete();
+
+        return redirect()->route('categories.index')->with('success', 'Category\'s been deleted successfully ❕');
+    }
     public function create() {
 
         return view('categories.create');

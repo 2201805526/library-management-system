@@ -18,12 +18,10 @@
     @foreach ($borrowings as $borrowing)
       <ul class="list-group">
             @if(!is_null($borrowing->returned_at))
-            <li class="list-group-item">user id : {{$borrowing->user_id}}</li>
-            <li class="list-group-item">Student's name : {{$borrowing->user->name}}</li>
-            <li class="list-group-item">Book's Title : {{$borrowing->book->title}}</li>
-            <li class="list-group-item">Borrowed at : {{$borrowing->borrowed_at}}</li>
-            <li class="list-group-item">Due at : {{$borrowing->due_at}}</li>
-            <li class="list-group-item">This borrowing was returned at : {{$borrowing->returned_at}}</li>
+            <li class="list-group-item"><strong>Book's Title :</strong>  {{$borrowing->book->title}}</li>
+            <li class="list-group-item"><strong>Borrowed at :</strong>  {{$borrowing->borrowed_at}}</li>
+            <li class="list-group-item"><strong>Due at :</strong> {{$borrowing->due_at}}</li>
+            <li class="list-group-item"><strong>This borrowing was returned at :</strong>  {{$borrowing->returned_at}}</li>
             @endif
             <br>
         </ul>

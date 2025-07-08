@@ -14,7 +14,7 @@
     <br>
     @auth
         {{-- an admin or librarian can either edit or delete this book here 👇🏼 --}}
-        @if (Auth::user()->role === 'admin' || Auth::user()->role === 'librarian')
+        @if (Auth::user()->role === 'librarian')
         {{-- edit  --}}
         <form action="{{route('books.edit', $book->id)}}" method="GET">
             @csrf
@@ -45,11 +45,11 @@
           Auth::user()->role === 'student' &&
          !$book->available &&
           $book->currentBorrowing &&
-          $book->currentBorrowing->user_id === Auth::user()->id
+          $book->currentBorrowing->user->id === Auth::user()->id
           )
         <form action="{{route('books.return',  $book->id)}}" method="POST" onsubmit="return confirm('Return {{$book->title}}?')">
             @csrf
-            <button type="submit" class="btn btn-sm btn-success px-4 text-sm float-start">Return the Book</button>
+            <button type="submit" class="btn btn-sm btn-outline-dark px-4 float-start">Return the Book</button>
         </form>
         @endif
     @endauth
