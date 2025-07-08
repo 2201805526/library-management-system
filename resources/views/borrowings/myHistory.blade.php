@@ -2,18 +2,18 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2 class="mb-3">لوحة عرض الاستعارات</h2>
+    <h2 class="mb-3"> My Borrowings' History </h2>
     @if (session('fail'))
-    <div class="alert alert-danger">
+    <div class="alert alert-dark">
         {{ session('fail') }}
     </div>
     @elseif (session('success'))
-    <div class="alert alert-light">
+    <div class="alert alert-dark">
         {{ session('success') }}
     </div>
     @endif
-    <div class="alert alert-success">
-        مرحباً {{ auth()->user()->name }}! يمكنك عرض الاستعارات.
+    <div class="alert alert-dark">
+        welcome {{ auth()->user()->name }} 👨🏼‍🎓❕
     </div>
     @foreach ($borrowings as $borrowing)
       <ul class="list-group">

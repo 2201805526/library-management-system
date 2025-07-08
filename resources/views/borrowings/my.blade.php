@@ -2,18 +2,18 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2 class="mb-3">لوحة عرض الاستعارات</h2>
+    <h2 class="mb-3">My Borrowings </h2>
     @if (session('fail'))
-    <div class="alert alert-danger">
+    <div class="alert alert-dark">
         {{ session('fail') }}
     </div>
     @elseif (session('success'))
-    <div class="alert alert-light">
+    <div class="alert alert-dark">
         {{ session('success') }}
     </div>
     @endif
-    <div class="alert alert-success">
-        مرحباً {{ auth()->user()->name }}! يمكنك عرض الاستعارات.
+    <div class="alert alert-dark">
+        welcome {{ auth()->user()->name }} 👨🏼‍🎓
     </div>
 
     <ul class="list-group">
@@ -31,7 +31,7 @@
                 <form class="float" action="{{route('borrowing.return',  $borrowing->id)}}" method="POST" onsubmit="return confirm('Return {{$borrowing->book->title}}?')">
                     @csrf
                     @method('PUT')
-                    <button type="submit" class="btn btn-sm btn-success px-4 text-sm float-start">Return the Book</button>
+                    <button type="submit" class="btn btn-sm btn-outline-dark px-4 text-sm float-start">Return the Book</button>
                 </form>
                 </li>
             @endif

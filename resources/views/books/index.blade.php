@@ -2,25 +2,25 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2 class="mb-3">لوحة عرض الكتب </h2>
+    <h2 class="mb-3">All Books </h2>
     @if (session('success'))
-    <div class="alert alert-success text-center">
+    <div class="alert alert-dark">
         {{ session('success') }}
     </div>
     @elseif (session('fail'))
-    <div class="alert alert-danger text-center">
+    <div class="alert alert-dark">
         {{ session('fail') }}
     </div>
     @endif
-    <div class="alert alert-success text-center">
-        مرحباً {{ auth()->user()->name }}! يمكنك عرض الكتب والاستعارات.
+    <div class="alert alert-dark">
+        welcome {{ auth()->user()->name }} 📚
     </div>
 
-    <ul class="list-group text-center">
+    <ul class="list-group">
         @if (auth()->user()->role === 'admin' || auth()->user()->role === 'librarian')
         <ul class="list-group">
             <li class="list-group-item">
-                <a href="{{ route('books.create') }}" class="btn btn-sm btn-outline-success">
+                <a href="{{ route('books.create') }}" class="btn btn-sm btn-outline-dark">
                     Add New Book
                 </a>
             </li>
@@ -32,7 +32,7 @@
             <li class="list-group-item">Title : {{$book->title}}</li>
             <li class="list-group-item">Author : {{$book->author->name}}</li>
             <li class="list-group-item">Category : {{$book->category->name}}</li>
-            <li class="list-group-item"><a href="{{route('books.show', $book->id)}}" class="btn btn-sm btn-outline-info"> View {{$book->title}}'s Details </a></li>
+            <li class="list-group-item"><a href="{{route('books.show', $book->id)}}" class="btn btn-sm btn-outline-secondary"> View {{$book->title}}'s Details </a></li>
         </ul>
         <br>
         @endforeach

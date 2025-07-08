@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2 class="mb-3">لوحة عرض الغرامات</h2>
-    <div class="alert alert-success">
-        مرحباً {{ auth()->user()->name }}! يمكنك عرض الكتب والاستعارات.
+    <h2 class="mb-3">All Fines  </h2>
+    <div class="alert alert-dark">
+        welcome {{ auth()->user()->name }} 💸
     </div>
 
     <ul class="list-group">

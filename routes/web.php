@@ -100,7 +100,7 @@ Route::middleware(['auth', 'role:librarian'])->group(function () {
     Route::delete('/author/{id}', [AuthorController::class, 'destroy'])->name('authors.destroy');
 
     //categories
-    Route::get('category/create',[CategoryController::class, 'create'])->name('categories.create');
+    Route::get('/category/add/{role}', [CategoryController::class, 'add'])->name('categories.add');
     Route::post('/category', [CategoryController::class, 'store'])->name('categories.store');
     Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
     Route::put('/category/{id}', [CategoryController::class, 'update'])->name('categories.update');

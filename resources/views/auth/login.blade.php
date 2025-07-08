@@ -32,7 +32,7 @@
                     <input type="password" name="password" class="form-control" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">دخول</button>
+                <button type="submit" class="btn btn-dark w-100">دخول</button>
             </form>
         </div>
     </div>

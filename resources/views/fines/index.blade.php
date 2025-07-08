@@ -2,14 +2,18 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2 class="mb-3">لوحة عرض الغرامات</h2>
+    <h2 class="mb-3">My Fines</h2>
     @if (session('success'))
-    <div class="alert alert-info">
+    <div class="alert alert-dark">
         {{ session('success') }}
     </div>
-@endif
-    <div class="alert alert-success">
-        مرحباً {{ auth()->user()->name }}! يمكنك عرض الكتب والاستعارات.
+    @elseif(session('fail'))
+    <div class="alert alert-dark">
+        {{session('fail')}}
+    </div>
+    @endif
+    <div class="alert alert-dark">
+        welcome {{ auth()->user()->name }} 👨🏼‍🎓💸
     </div>
 
     <ul class="list-group">
@@ -22,7 +26,7 @@
             <form class="float" action="{{route('fines.pay', $fine->id)}}" method="post" onsubmit="return confirm('Pay {{$fine->amount}} for a fine?')">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-success px-4 text-sm float-start">Pay</button>
+                <button type="submit" class="btn btn-sm btn-outline-dark px-4 text-sm float-start">Pay</button>
 
             </form>
             </li>

@@ -5,11 +5,11 @@
 <div class="container mt-4">
     <h2 class="mb-3"> Active Borrowings </h2>
     @if (session('fail'))
-    <div class="alert alert-danger">
+    <div class="alert alert-dark">
         {{ session('fail') }}
     </div>
     @elseif (session('success'))
-    <div class="alert alert-success">
+    <div class="alert alert-dark">
         {{ session('success') }}
     </div>
     @endif

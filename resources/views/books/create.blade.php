@@ -68,7 +68,7 @@
 
         {{-- submit button --}}
         <div class="text-start ">
-            <button type="submit" class="btn btn-outline-success">
+            <button type="submit" class="btn btn-outline-dark">
                 Add Book
             </button>
         </div>

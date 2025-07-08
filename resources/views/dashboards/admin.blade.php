@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2 class="mb-3">لوحة تحكم المدير</h2>
-    <div class="alert alert-info">
-        مرحباً {{ auth()->user()->name }}! يمكنك إدارة النظام بشكل كامل.
+    <h2 class="mb-3">Admin's Dashboard</h2>
+    <div class="alert alert-dark">
+        welcome {{ auth()->user()->name }} 💻❕
     </div>
 
     <ul class="list-group">

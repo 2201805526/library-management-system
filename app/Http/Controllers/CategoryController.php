@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Book;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -45,9 +44,12 @@ class CategoryController extends Controller
 
         return redirect()->route('categories.index')->with('success', 'Category\'s been deleted successfully ❕');
     }
-    public function create() {
-
-        return view('categories.create');
+    public function add(String $role){
+        if($role === 'librarian'){
+            return view('categories.add');
+        } else 
+        {return dd($role);}
+        
     }
     public function store(Request $request) {
 

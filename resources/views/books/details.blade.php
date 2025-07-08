@@ -16,13 +16,13 @@
         {{-- an admin or librarian can either edit or delete this book here 👇🏼 --}}
         @if (Auth::user()->role === 'librarian')
         {{-- edit  --}}
-        <form action="{{route('books.edit', $book->id)}}" method="GET">
+        <form style="display: inline-flex" action="{{route('books.edit', $book->id)}}" method="GET">
             @csrf
             <button type="submit" class="btn btn-sm btn-outline-warning">Edit {{$book->title}}</button>
         </form>
 
         {{-- delete --}}
-        <form action="{{route('books.destroy', $book->id)}}" method="POST">
+        <form style="display: inline-flex" action="{{route('books.destroy', $book->id)}}" method="POST">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-sm btn-outline-danger">Delete {{$book->title}}</button>
@@ -34,7 +34,7 @@
         @elseif (Auth::user()->role === 'student' && $book->available)
         <form action="{{route('borrow.book', $book->id)}}" method="POST" onsubmit="return confirm('Borrow {{$book->title}}?')">
             @csrf
-            <button type="submit" class="btn btn-sm btn-outline-success">Borrow {{$book->title}}</button>
+            <button type="submit" class="btn btn-sm btn-outline-dark">Borrow {{$book->title}}</button>
         </form>
         {{--
             if the book wasn't available,
