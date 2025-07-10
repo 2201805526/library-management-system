@@ -1,8 +1,15 @@
 @extends('layouts.app')
 
+@section('title', 'Edit ' . $author->name)
+
 @section('content')
-<div class="container">
-    <h1>Edit Author</h1>
+<div class="container mt-4">
+
+    @section('navbar')
+    @include('layouts.navbarLibrarian')
+    @endsection
+
+    <h2 class="mb-3">Edit Author</h2>
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul class="mb-0">

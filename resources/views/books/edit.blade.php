@@ -1,8 +1,14 @@
 @extends('layouts.app')
 
+@section('title', 'Edit Book')
+
 @section('content')
-<div class="container">
-    <h1>Edit Book</h1>
+<div class="container mt-4">
+    <h2 class="mb-3">Edit Book</h2>
+    
+    @section('navbar')
+    @include('layouts.navbarLibrarian')
+    @endsection
 
     <form action="{{route('books.update', $book->id)}}" method="POST">
         @csrf

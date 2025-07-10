@@ -1,15 +1,22 @@
 @extends('layouts.app')
 
+@section('title', 'Users')
+
 @section('content')
 <div class="container mt-4">
-    <h2 class="mb-3">لوحة تحكم المدير</h2>
-    @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+
+    @auth
+    @if (auth()->user()->role === 'admin')
+    @section('navbar')
+    @include('layouts.navbarAdmin')
+    @endsection
+    @endif
+    @endauth
+
+    <h2 class="mb-3">All Users</h2>
+
     <div class="alert alert-dark">
-        مرحباً {{ auth()->user()->name }}! يمكنك إدارة المستخدمين بشكل كامل.
+        welcome {{ auth()->user()->name }} 💻❕
     </div>
 
     <ul class="list-group">
@@ -19,7 +26,7 @@
             <li class="list-group-item"><strong>Role : </strong>{{$user->role}}</li>
 
             @if ($user->role === 'student' || $user->role === 'librarian')
-            <li class="list-group-item"><button class="btn btn-sm btn-outline-info" onclick="window.location='{{route('users.show', $user)}}'">Show {{$user->name}}'s Details </button></li>
+            <li class="list-group-item"><button class="btn btn-sm btn-outline-secondary" onclick="window.location='{{route('users.show', $user)}}'">Show {{$user->name}}'s Details </button></li>
             @endif
             <br>
         @endforeach

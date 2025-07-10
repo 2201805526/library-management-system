@@ -1,11 +1,25 @@
 @extends('layouts.app')
 
+@section('title', $author->name . '\'s Details')
+
 @section('content')
 
 <div class="container mt-4">
-    <h1>Author's Details</h1>
+    <h2 class="mb-3">Author's Details</h2>
 
-    <div class="mt-4">
+    @auth
+    @section('navbar')
+        @if (auth()->user()->role === 'admin')
+         @include('layouts.navbarAdmin')
+        @elseif (auth()->user()->role === 'librarian')
+         @include('layouts.navbarLibrarian')
+        @elseif (auth()->user()->role === 'student')
+         @include('layouts.navbarStudent')
+        @endif
+    @endsection
+    @endauth
+
+    <div >
     <p><strong>ID : </strong> {{ $author->id }}</p>
     <p><strong>Name : </strong> {{ $author->name }}</p>
     <p> <strong> Author's Biography : </strong> {{$author->bio}}</p>

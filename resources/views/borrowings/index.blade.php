@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Borrowings')
+
 @section('content')
 
 <div class="container mt-4">
@@ -13,6 +15,9 @@
         {{ session('success') }}
     </div>
     @endif
+    @section('navbar')
+    @include('layouts.navbarLibrarian')
+    @endsection
     <div class="alert alert-dark">
         Current Borrowings {{ auth()->user()->name }} ❕
     </div>

@@ -1,8 +1,25 @@
 @extends('layouts.app')
 
+@section('title', 'Edit' . $category->name . 'Category')
+
 @section('content')
-<div class="container">
-    <h1>Edit Category</h1>
+<div class="container mt-4">
+    <h2 class="mb-3">Edit Category</h2>
+
+    @section('navbar')
+    @include('layouts.navbarLibrarian')
+    @endsection
+
+
+    @if (session('fail'))
+    <div class="alert alert-dark">
+        {{ session('fail') }}
+    </div>
+    @elseif (session('success'))
+    <div class="alert alert-dark">
+        {{ session('success') }}
+    </div>
+    @endif
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul class="mb-0">

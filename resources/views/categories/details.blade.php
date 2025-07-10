@@ -1,13 +1,29 @@
 @extends('layouts.app')
 
+@section('title',$category->name . '\'s Details')
+
 @section('content')
 
 <div class="container mt-4">
-    <h1>Category's Details</h1>
 
-    <div class="mt-4">
+    <h2 class="mb-3">Category's Details</h2>
 
+    @auth
+    @section('navbar')
+    @if (auth()->user()->role === 'admin')
+    @include('layouts.navbarAdmin')
+    @elseif (auth()->user()->role === 'librarian')
+    @include('layouts.navbarLibrarian')
+    @elseif (auth()->user()->role === 'student')
+    @include('layouts.navbarStudent')
+    @endif
+    @endsection
+    @endauth
+
+
+    @if (Auth::user()->role === 'admin' || Auth::user()->role === 'librarian')
     <p><strong>ID : </strong> {{ $category->id }}</p>
+    @endif
     <p><strong>Name : </strong> {{ $category->name }}</p>
     <p> <strong> Description : </strong> {{$category->description}}</p>
     <p><strong>Books Categorized as {{$category->name}} : </strong></p>
@@ -35,8 +51,4 @@
         </form>
         @endif
     @endauth
-
-    </div>
-
-
 @endsection

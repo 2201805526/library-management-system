@@ -17,7 +17,7 @@ class BorrowingController extends Controller
     }
 
     public function showMy(String $id){
-        $borrowings = Borrowing::findOrFail($id)->with(['user', 'book', 'fine'])->get();
+        $borrowings = Borrowing::with(['user', 'book', 'fine'])->get();
 
         return view('borrowings.my', compact('borrowings'));
     }

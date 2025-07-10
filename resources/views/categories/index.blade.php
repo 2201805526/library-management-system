@@ -1,9 +1,26 @@
 @extends('layouts.app')
 
+@section('title', 'Categories')
+
 @section('content')
 
 <div class="container mt-4">
     <h2 class="mb-3"> All Categories </h2>
+
+    @auth
+        @if (auth()->user()->role === 'admin')
+        @section('navbar')
+        @include('layouts.navbarAdmin')
+        @endsection
+        @elseif (auth()->user()->role === 'librarian')
+        @section('navbar')
+        @include('layouts.navbarLibrarian')
+        @endsection
+        @elseif (auth()->user()->role === 'student')
+        @include('layouts.navbarStudent')
+        @endif
+    @endauth
+
     @if (session('fail'))
     <div class="alert alert-dark">
         {{ session('fail') }}
@@ -13,6 +30,7 @@
         {{ session('success') }}
     </div>
     @endif
+
     <div class="alert alert-dark">
         welcome {{ auth()->user()->name }} ❕
     </div>

@@ -1,20 +1,26 @@
 @extends('layouts.app')
 
+@section('title', Auth::user()->name . '\'s Fines')
+
 @section('content')
 <div class="container mt-4">
-    <h2 class="mb-3">My Fines</h2>
-    @if (session('success'))
+    <h2 class="mb-3">{{Auth::user()->name}} Fines</h2>
+    @if (session('fail'))
+    <div class="alert alert-dark">
+        {{ session('fail') }}
+    </div>
+    @elseif (session('success'))
     <div class="alert alert-dark">
         {{ session('success') }}
-    </div>
-    @elseif(session('fail'))
-    <div class="alert alert-dark">
-        {{session('fail')}}
     </div>
     @endif
     <div class="alert alert-dark">
         welcome {{ auth()->user()->name }} 👨🏼‍🎓💸
     </div>
+    @section('navbar')
+    @include('layouts.navbarStudent')
+    @endsection
+
 
     <ul class="list-group">
         @foreach ($fines as $fine)

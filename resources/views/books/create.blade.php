@@ -1,8 +1,14 @@
 @extends('layouts.app')
 
+@section('title', 'New Book')
+
 @section('content')
 <div class="container mt-4">
-    <h1 class="mb-4">Add New Book</h1>
+    <h2 class="mb-4">Add New Book</h2>
+    
+    @section('navbar')
+    @include('layouts.navbarLibrarian')
+    @endsection
 
     {{-- Show validation errors --}}
     @if ($errors->any())

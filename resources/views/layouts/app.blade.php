@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="eng">
 <head>
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Library Management System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <title>@yield('title', 'Library Management System')</title>
+    <!-- Bootstrap CSS from both folders for compatibility -->
+    <link rel="stylesheet" href="{{ asset('Bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bootstrap-5.3.7-dist/css/bootstrap.rtl.min.css') }}">
+
+<style>
+        body {
+    padding-top: 60px;
+    }
+    </style>
 </head>
 <body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="{{route('dashboard')}}">Dashboard </a>
-            <div class="ms-auto">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button class="btn btn-danger btn-sm me-xxl-3" type="submit"> Log out </button>
-                </form>
-            </div>
-        </div>
-    </nav>
+    @yield('navbar')
 
     @yield('content')
+
+    <!-- Bootstrap JS from both folders for compatibility -->
+    <script src="{{ asset('Bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>

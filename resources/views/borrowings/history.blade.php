@@ -1,9 +1,22 @@
 @extends('layouts.app')
 
+@section('title', 'Borrowings History')
+
 @section('content')
 
 <div class="container mt-4">
     <h2 class="mb-3"> Borrowings History</h2>
+
+    @auth
+    @section('navbar')
+        @if (auth()->user()->role === 'admin')
+         @include('layouts.navbarAdmin')
+        @elseif (auth()->user()->role === 'librarian')
+         @include('layouts.navbarLibrarian')
+         @endif
+    @endsection
+    @endauth
+    
     @if (session('fail'))
     <div class="alert alert-dark">
         {{ session('fail') }}

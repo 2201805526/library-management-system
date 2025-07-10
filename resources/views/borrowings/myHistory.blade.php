@@ -1,8 +1,16 @@
 @extends('layouts.app')
 
+@section('title', Auth::user()->name . '\'s Borrowings\' History')
+
+
 @section('content')
 <div class="container mt-4">
-    <h2 class="mb-3"> My Borrowings' History </h2>
+    <h2 class="mb-3">My Borrowings' History</h2>
+
+    @section('navbar')
+    @include('layouts.navbarStudent')
+    @endsection
+
     @if (session('fail'))
     <div class="alert alert-dark">
         {{ session('fail') }}
@@ -12,6 +20,7 @@
         {{ session('success') }}
     </div>
     @endif
+
     <div class="alert alert-dark">
         welcome {{ auth()->user()->name }} 👨🏼‍🎓❕
     </div>

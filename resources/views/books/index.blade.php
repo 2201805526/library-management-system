@@ -1,20 +1,34 @@
 @extends('layouts.app')
 
+@section('title', 'Books')
+
 @section('content')
 <div class="container mt-4">
     <h2 class="mb-3">All Books </h2>
-    @if (session('success'))
-    <div class="alert alert-dark">
-        {{ session('success') }}
-    </div>
-    @elseif (session('fail'))
+    @if (session('fail'))
     <div class="alert alert-dark">
         {{ session('fail') }}
+    </div>
+    @elseif (session('success'))
+    <div class="alert alert-dark">
+        {{ session('success') }}
     </div>
     @endif
     <div class="alert alert-dark">
         welcome {{ auth()->user()->name }} 📚
     </div>
+
+    @auth
+    @section('navbar')
+        @if (auth()->user()->role === 'admin')
+         @include('layouts.navbarAdmin')
+        @elseif (auth()->user()->role === 'librarian')
+         @include('layouts.navbarLibrarian')
+        @elseif (auth()->user()->role === 'student')
+         @include('layouts.navbarStudent')
+        @endif
+    @endsection
+    @endauth
 
     <ul class="list-group">
         @if (auth()->user()->role === 'admin' || auth()->user()->role === 'librarian')

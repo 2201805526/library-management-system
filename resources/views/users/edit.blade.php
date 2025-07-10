@@ -1,9 +1,21 @@
 
 @extends('layouts.app')
 
+@section('title', 'Edit User')
+
+
 @section('content')
-<div class="container">
-    <h1>Edit User</h1>
+
+@auth
+@if (auth()->user()->role === 'admin')
+@section('navbar')
+@include('layouts.navbarAdmin')
+@endsection
+@endif
+@endauth
+
+<div class="container mt-4">
+    <h2 class="mb-3">Edit User</h2>
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul class="mb-0">
